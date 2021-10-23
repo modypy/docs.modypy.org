@@ -1,0 +1,3 @@
+[submodule "modypy-sphinx-style"]
+	path = modypy-sphinx-style
+	url = https://github.com/modypy/modypy-sphinx-style.git
