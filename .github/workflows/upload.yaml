@@ -1,0 +1,36 @@
+name: Upload main page to docs.modypy.org
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          # We need submodules for the documentation styles
+          submodules: true
+      - name: Set up Python
+        uses: actions/setup-python@v1
+      - name: Install depedencies
+        run : |
+          pip install -r requirements-docs.txt
+      - name: Build HTML documentation
+        run : |
+          make html
+      - name: Deploy the documentation to the server
+        uses: SamKirkland/FTP-Deploy-Action@4.1.0
+        with:
+          protocol: ftps
+          server: ${{ secrets.docs_server }}
+          username: ${{ secrets.docs_username }}
+          password: ${{ secrets.docs_password }}
+          local-dir: ./_build/html/
+          server-dir: ${{ secrets.docs_target_dir }}
+          security: strict
+          dry-run: true
+          verbose: true
+          exclude: "[**/.git*, **/.git*/**, release, master]"
