@@ -31,6 +31,4 @@ jobs:
           local-dir: ./_build/html/
           server-dir: ${{ secrets.docs_target_dir }}
           security: strict
-          dry-run: true
-          verbose: true
           exclude: "[**/.git*, **/.git*/**, release, master]"
